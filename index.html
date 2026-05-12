@@ -24,6 +24,7 @@
     </form>
 
     <div class="nav-actions">
+      <a href="login.html" class="btn-outline" data-auth-guest>Masuk</a>
       <a href="upload.html" class="btn-primary">+ Buat Pin</a>
       <button class="notif-btn" id="notifBtn" type="button" title="Notifikasi">
         !
@@ -36,7 +37,7 @@
           <a href="#pinGrid" class="dropdown-item">Pin Tersimpan</a>
           <a href="#settings" class="dropdown-item">Pengaturan</a>
           <div class="dropdown-divider"></div>
-          <a href="login.html" class="dropdown-item danger">Keluar</a>
+          <button class="dropdown-item danger" type="button" data-logout data-auth-user>Keluar</button>
         </div>
       </div>
     </div>
@@ -119,6 +120,7 @@
   <div class="toast hidden" id="toast"></div>
   <a href="upload.html" class="fab" title="Buat Pin Baru">+</a>
 
+  <script src="js/static-auth.js"></script>
   <script src="js/static-app.js"></script>
 </body>
 </html>

@@ -13,27 +13,47 @@
     <section class="auth-card">
       <div class="auth-logo">
         <h1>PinShare</h1>
-        <p>Masuk untuk menyimpan inspirasi favoritmu.</p>
+        <p id="authSubtitle">Masuk untuk menyimpan inspirasi favoritmu.</p>
       </div>
+
       <div class="auth-tabs">
-        <button class="auth-tab active" type="button">Masuk</button>
-        <button class="auth-tab" type="button">Daftar</button>
+        <button class="auth-tab active" id="loginTab" type="button">Masuk</button>
+        <button class="auth-tab" id="registerTab" type="button">Daftar</button>
       </div>
-      <form id="demoLogin">
+
+      <form id="loginForm">
         <div class="form-group">
-          <label for="email">Email</label>
-          <input class="form-control" id="email" type="email" placeholder="email@kamu.com">
+          <label for="loginEmail">Email</label>
+          <input class="form-control" id="loginEmail" type="email" placeholder="email@kamu.com" required>
         </div>
         <div class="form-group">
-          <label for="password">Kata sandi</label>
-          <input class="form-control" id="password" type="password" placeholder="Kata sandi">
+          <label for="loginPassword">Kata sandi</label>
+          <input class="form-control" id="loginPassword" type="password" placeholder="Kata sandi" required>
         </div>
-        <button class="btn-primary" type="submit" style="width:100%;justify-content:center;">Masuk Demo</button>
+        <button class="btn-primary" type="submit" style="width:100%;justify-content:center;">Masuk</button>
       </form>
-      <p class="auth-footer">Versi GitHub Pages ini berjalan tanpa database. <a href="index.html">Kembali ke beranda</a></p>
+
+      <form id="registerForm" class="hidden">
+        <div class="form-group">
+          <label for="registerName">Nama</label>
+          <input class="form-control" id="registerName" type="text" placeholder="Nama kamu" required>
+        </div>
+        <div class="form-group">
+          <label for="registerEmail">Email</label>
+          <input class="form-control" id="registerEmail" type="email" placeholder="email@kamu.com" required>
+        </div>
+        <div class="form-group">
+          <label for="registerPassword">Kata sandi</label>
+          <input class="form-control" id="registerPassword" type="password" placeholder="Minimal 6 karakter" minlength="6" required>
+        </div>
+        <button class="btn-primary" type="submit" style="width:100%;justify-content:center;">Daftar</button>
+      </form>
+
+      <p class="auth-footer">Versi GitHub Pages ini menyimpan akun di browser kamu. <a href="index.html">Kembali ke beranda</a></p>
     </section>
   </main>
+
   <div class="toast hidden" id="toast"></div>
-  <script src="js/static-upload.js"></script>
+  <script src="js/static-auth.js"></script>
 </body>
 </html>

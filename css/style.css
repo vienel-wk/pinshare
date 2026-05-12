@@ -227,6 +227,11 @@ button { cursor: pointer; font-family: var(--font-body); }
   gap: 6px;
 }
 .btn-outline:hover { border-color: var(--text); background: var(--pill-bg); }
+.btn-outline.active {
+  border-color: var(--accent);
+  background: var(--accent-light);
+  color: var(--accent);
+}
 
 /* =============================================
    KATEGORI PILLS
@@ -344,6 +349,9 @@ button { cursor: pointer; font-family: var(--font-body); }
   transition: background .15s;
 }
 .btn-save:hover { background: var(--accent-hover); }
+.btn-save.active {
+  background: var(--text);
+}
 
 .overlay-actions {
   display: flex;

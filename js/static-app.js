@@ -92,6 +92,8 @@ let searchTerm = '';
 let visibleCount = 6;
 let activePin = null;
 let comments = JSON.parse(localStorage.getItem('pinshare-comments') || '{}');
+let likedPins = JSON.parse(localStorage.getItem('pinshare-liked') || '[]');
+let savedPins = JSON.parse(localStorage.getItem('pinshare-saved') || '[]');
 
 const pinGrid = document.getElementById('pinGrid');
 const emptyState = document.getElementById('emptyState');
@@ -119,6 +121,51 @@ function showToast(message, type = 'success') {
   }, 2200);
 }
 
+function savePinState() {
+  localStorage.setItem('pinshare-liked', JSON.stringify(likedPins));
+  localStorage.setItem('pinshare-saved', JSON.stringify(savedPins));
+}
+
+function isLiked(pinId) {
+  return likedPins.includes(Number(pinId));
+}
+
+function isSaved(pinId) {
+  return savedPins.includes(Number(pinId));
+}
+
+function displayedLikes(pin) {
+  return pin.likes + (isLiked(pin.id) ? 1 : 0);
+}
+
+function toggleLike(pinId) {
+  const id = Number(pinId);
+  if (isLiked(id)) {
+    likedPins = likedPins.filter((item) => item !== id);
+    showToast('Suka dibatalkan.');
+  } else {
+    likedPins.push(id);
+    showToast('Pin disukai.');
+  }
+  savePinState();
+  renderPins();
+  if (activePin && activePin.id === id) syncModalActions();
+}
+
+function toggleSave(pinId) {
+  const id = Number(pinId);
+  if (isSaved(id)) {
+    savedPins = savedPins.filter((item) => item !== id);
+    showToast('Simpan dibatalkan.');
+  } else {
+    savedPins.push(id);
+    showToast('Pin disimpan.');
+  }
+  savePinState();
+  renderPins();
+  if (activePin && activePin.id === id) syncModalActions();
+}
+
 function filteredPins() {
   return pins.filter((pin) => {
     const inCategory = activeCategory === 'semua' || pin.category === activeCategory;
@@ -138,9 +185,13 @@ function renderPins() {
           <span>${escapeHtml(pin.category)}</span>
         </div>
         <div class="pin-overlay">
-          <button class="btn-save" type="button" data-action="save" data-pin-id="${pin.id}">Simpan</button>
+          <button class="btn-save ${isSaved(pin.id) ? 'active' : ''}" type="button" data-action="save" data-pin-id="${pin.id}">
+            ${isSaved(pin.id) ? 'Tersimpan' : 'Simpan'}
+          </button>
           <div class="overlay-actions">
-            <button class="icon-btn" type="button" data-action="like" data-pin-id="${pin.id}">Suka ${pin.likes}</button>
+            <button class="icon-btn ${isLiked(pin.id) ? 'active' : ''}" type="button" data-action="like" data-pin-id="${pin.id}">
+              ${isLiked(pin.id) ? 'Batal suka' : 'Suka'} ${displayedLikes(pin)}
+            </button>
             <button class="icon-btn" type="button" data-action="share" data-pin-id="${pin.id}">Bagikan</button>
           </div>
         </div>
@@ -178,10 +229,21 @@ function openPin(pinId) {
   modalVisual.textContent = activePin.category;
   document.getElementById('modalAvatar').textContent = activePin.initials;
   document.getElementById('modalUser').textContent = activePin.user;
-  document.getElementById('modalLikeCount').textContent = activePin.likes;
+  syncModalActions();
   renderComments();
   document.getElementById('pinModal').classList.remove('hidden');
   document.body.style.overflow = 'hidden';
+}
+
+function syncModalActions() {
+  if (!activePin) return;
+  const modalLikeBtn = document.getElementById('modalLikeBtn');
+  const modalSaveBtn = document.getElementById('modalSaveBtn');
+  document.getElementById('modalLikeCount').textContent = displayedLikes(activePin);
+  modalLikeBtn.classList.toggle('liked', isLiked(activePin.id));
+  modalLikeBtn.firstChild.textContent = isLiked(activePin.id) ? 'Batal suka ' : 'Suka ';
+  modalSaveBtn.textContent = isSaved(activePin.id) ? 'Tersimpan' : 'Simpan';
+  modalSaveBtn.classList.toggle('active', isSaved(activePin.id));
 }
 
 function saveComments() {
@@ -232,11 +294,9 @@ pinGrid.addEventListener('click', (event) => {
     const pin = pins.find((item) => item.id === Number(actionButton.dataset.pinId));
     const label = actionButton.dataset.action;
     if (label === 'like') {
-      pin.likes += 1;
-      showToast('Pin disukai.');
-      renderPins();
+      toggleLike(pin.id);
     }
-    if (label === 'save') showToast('Pin disimpan.');
+    if (label === 'save') toggleSave(pin.id);
     if (label === 'share') shareCurrentPin(pin);
     return;
   }
@@ -273,13 +333,13 @@ document.getElementById('pinModal').addEventListener('click', (event) => {
 
 document.getElementById('modalLikeBtn').addEventListener('click', () => {
   if (!activePin) return;
-  activePin.likes += 1;
-  document.getElementById('modalLikeCount').textContent = activePin.likes;
-  showToast('Pin disukai.');
-  renderPins();
+  toggleLike(activePin.id);
 });
 
-document.getElementById('modalSaveBtn').addEventListener('click', () => showToast('Pin disimpan.'));
+document.getElementById('modalSaveBtn').addEventListener('click', () => {
+  if (!activePin) return;
+  toggleSave(activePin.id);
+});
 document.getElementById('followBtn').addEventListener('click', (event) => {
   event.target.textContent = event.target.textContent === 'Ikuti' ? 'Mengikuti' : 'Ikuti';
 });

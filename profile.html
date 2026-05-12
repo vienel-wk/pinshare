@@ -13,6 +13,10 @@
     <a href="index.html" class="nav-logo"><span class="nav-logo-dot"></span> PinShare</a>
     <a href="index.html" class="nav-link">Beranda</a>
     <a href="upload.html" class="btn-primary">+ Buat Pin</a>
+    <div class="nav-actions">
+      <a href="login.html" class="btn-outline" data-auth-guest>Masuk</a>
+      <button class="btn-outline hidden" type="button" data-logout data-auth-user>Keluar</button>
+    </div>
   </nav>
 
   <header class="profile-header">
@@ -40,14 +44,19 @@
   <main class="main-content">
     <div class="masonry-grid">
       <article class="pin-card">
-        <div class="pin-image-wrap"><img src="uploads/img_6a01dce9b973c1.86645048.jpg" alt="Pin saya"></div>
+        <div class="pin-image-wrap">
+          <div class="pin-placeholder" style="background:#f6d7df;"><span>Desain</span></div>
+        </div>
         <div class="pin-info"><h2 class="pin-title">Inspirasi ruang kerja minimalis</h2></div>
       </article>
       <article class="pin-card">
-        <div class="pin-image-wrap"><img src="uploads/img_6a0222586afd32.67139827.jpg" alt="Pin tersimpan"></div>
+        <div class="pin-image-wrap">
+          <div class="pin-placeholder" style="background:#d7e7f6;"><span>Fotografi</span></div>
+        </div>
         <div class="pin-info"><h2 class="pin-title">Referensi foto produk kreatif</h2></div>
       </article>
     </div>
   </main>
+  <script src="js/static-auth.js"></script>
 </body>
 </html>
