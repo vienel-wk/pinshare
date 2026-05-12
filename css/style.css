@@ -481,6 +481,23 @@ button { cursor: pointer; font-family: var(--font-body); }
 .modal-close:hover { background: var(--pill-bg); }
 .modal-body { padding: 20px 24px; }
 
+.pin-modal-box {
+  max-width: 760px;
+}
+
+.pin-modal-body {
+  display: grid;
+  gap: 18px;
+}
+
+.pin-modal-img {
+  width: 100%;
+  max-height: 65vh;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  background: var(--pill-bg);
+}
+
 /* =============================================
    FORM UMUM
    ============================================= */

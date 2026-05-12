@@ -5,120 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Masuk - PinShare</title>
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/feed.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
-<body class="auth-body">
-
-  <div class="auth-container">
-    <!-- Sisi Kiri: Gambar & Info -->
-    <div class="auth-visual">
-      <div class="auth-visual-inner">
-        <div class="logo-big">
-          <span class="logo-dot-big"></span>
-          PinShare
-        </div>
-        <h2 class="auth-tagline">Temukan & Bagikan<br>Inspirasi Terbaikmu</h2>
-        <p class="auth-sub">Bergabung dengan jutaan kreator dan penikmat ide dari seluruh Indonesia</p>
-        <div class="auth-preview-pins">
-          <div class="preview-pin" style="background:#fce4ec;">🎨</div>
-          <div class="preview-pin tall" style="background:#e3f2fd;">🏠</div>
-          <div class="preview-pin" style="background:#e8f5e9;">📷</div>
-          <div class="preview-pin tall" style="background:#fff8e1;">🍳</div>
-          <div class="preview-pin" style="background:#f3e5f5;">👗</div>
-        </div>
+<body>
+  <main class="auth-page">
+    <section class="auth-card">
+      <div class="auth-logo">
+        <h1>PinShare</h1>
+        <p>Masuk untuk menyimpan inspirasi favoritmu.</p>
       </div>
-    </div>
-
-    <!-- Sisi Kanan: Form -->
-    <div class="auth-form-wrap">
-      <div class="auth-form-inner">
-        <div class="auth-tabs">
-          <button class="auth-tab active" id="loginTab">Masuk</button>
-          <button class="auth-tab" id="registerTab">Daftar</button>
-        </div>
-
-        <!-- Form Login -->
-        <form class="auth-form" id="loginForm">
-          <div class="form-group">
-            <label class="form-label">Email</label>
-            <input type="email" class="form-input" id="loginEmail" placeholder="email@kamu.com" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Kata Sandi</label>
-            <div class="input-password-wrap">
-              <input type="password" class="form-input" id="loginPassword" placeholder="Masukkan kata sandi" required>
-              <button type="button" class="toggle-password" data-target="loginPassword">👁</button>
-            </div>
-          </div>
-          <div class="form-row">
-            <label class="checkbox-label">
-              <input type="checkbox" id="rememberMe"> Ingat saya
-            </label>
-            <a href="#" class="forgot-link">Lupa kata sandi?</a>
-          </div>
-          <button type="submit" class="btn-auth">Masuk</button>
-          <div class="auth-divider"><span>atau</span></div>
-          <button type="button" class="btn-social" id="googleLogin">
-            <span>🔵</span> Masuk dengan Google
-          </button>
-          <button type="button" class="btn-social" id="guestLogin">
-            <span>👤</span> Lanjutkan sebagai Tamu
-          </button>
-        </form>
-
-        <!-- Form Register -->
-        <form class="auth-form" id="registerForm" style="display:none;">
-          <div class="form-group">
-            <label class="form-label">Nama Lengkap</label>
-            <input type="text" class="form-input" id="regName" placeholder="Nama kamu" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Username</label>
-            <div class="input-prefix-wrap">
-              <span class="input-prefix">@</span>
-              <input type="text" class="form-input prefixed" id="regUsername" placeholder="username_kamu" required>
-            </div>
-            <span class="form-hint" id="usernameCheck"></span>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Email</label>
-            <input type="email" class="form-input" id="regEmail" placeholder="email@kamu.com" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Kata Sandi</label>
-            <div class="input-password-wrap">
-              <input type="password" class="form-input" id="regPassword" placeholder="Min. 8 karakter" required>
-              <button type="button" class="toggle-password" data-target="regPassword">👁</button>
-            </div>
-            <div class="password-strength" id="passwordStrength">
-              <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
-              <span id="strengthText">Kekuatan kata sandi</span>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Konfirmasi Kata Sandi</label>
-            <input type="password" class="form-input" id="regPasswordConfirm" placeholder="Ulangi kata sandi" required>
-          </div>
-          <div class="form-group">
-            <label class="checkbox-label">
-              <input type="checkbox" id="agreeTerms" required>
-              Saya setuju dengan <a href="#">Syarat & Ketentuan</a>
-            </label>
-          </div>
-          <button type="submit" class="btn-auth">Buat Akun</button>
-        </form>
-
-        <p class="auth-footer-text">
-          Dengan masuk, kamu menyetujui <a href="#">Kebijakan Privasi</a> kami.
-        </p>
+      <div class="auth-tabs">
+        <button class="auth-tab active" type="button">Masuk</button>
+        <button class="auth-tab" type="button">Daftar</button>
       </div>
-    </div>
-  </div>
-
-  <div class="toast-container" id="toastContainer"></div>
-  <script src="js/utils.js"></script>
-  <script src="js/auth.js"></script>
-  <script src="js/login.js"></script>
+      <form id="demoLogin">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input class="form-control" id="email" type="email" placeholder="email@kamu.com">
+        </div>
+        <div class="form-group">
+          <label for="password">Kata sandi</label>
+          <input class="form-control" id="password" type="password" placeholder="Kata sandi">
+        </div>
+        <button class="btn-primary" type="submit" style="width:100%;justify-content:center;">Masuk Demo</button>
+      </form>
+      <p class="auth-footer">Versi GitHub Pages ini berjalan tanpa database. <a href="index.html">Kembali ke beranda</a></p>
+    </section>
+  </main>
+  <div class="toast hidden" id="toast"></div>
+  <script src="js/static-upload.js"></script>
 </body>
 </html>

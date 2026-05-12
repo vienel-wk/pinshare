@@ -9,160 +9,108 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo">
+      <span class="nav-logo-dot"></span>
+      PinShare
+    </a>
 
-  <!-- ===== NAVBAR ===== -->
-  <nav class="navbar" id="navbar">
-    <div class="nav-left">
-      <a href="index.html" class="logo">
-        <span class="logo-dot"></span> PinShare
-      </a>
-      <a href="index.html" class="nav-link active">Beranda</a>
-      <a href="explore.html" class="nav-link">Jelajah</a>
-    </div>
+    <a href="index.html" class="nav-link active">Beranda</a>
+    <a href="#pinGrid" class="nav-link">Jelajah</a>
 
-    <div class="search-wrap">
-      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
-      </svg>
-      <input type="text" id="searchInput" placeholder="Cari ide, inspirasi, proyek..." class="search-input">
-      <button id="searchBtn" class="search-clear" title="Cari">⌕</button>
-    </div>
+    <form class="nav-search" id="searchForm">
+      <span class="nav-search-icon">Cari</span>
+      <input type="search" id="searchInput" placeholder="Cari ide, inspirasi, proyek...">
+    </form>
 
-    <div class="nav-right">
+    <div class="nav-actions">
       <a href="upload.html" class="btn-primary">+ Buat Pin</a>
-      <div class="nav-icons">
-        <button class="icon-nav" id="notifBtn" title="Notifikasi">
-          🔔<span class="badge" id="notifBadge">3</span>
-        </button>
-        <button class="icon-nav" id="msgBtn" title="Pesan">💬</button>
-      </div>
-      <div class="avatar-wrap" id="avatarMenu">
-        <div class="avatar" id="userAvatar">AK</div>
-        <div class="dropdown-menu" id="dropdownMenu">
-          <a href="profile.html">👤 Profil Saya</a>
-          <a href="saved.html">🔖 Pin Tersimpan</a>
-          <a href="settings.html">⚙️ Pengaturan</a>
-          <hr>
-          <a href="login.html" class="logout-link" id="logoutBtn">🚪 Keluar</a>
+      <button class="notif-btn" id="notifBtn" type="button" title="Notifikasi">
+        !
+        <span class="notif-badge" id="notifBadge">3</span>
+      </button>
+      <div class="user-menu-wrap">
+        <button class="avatar-btn" id="avatarBtn" type="button" style="background:#e60023;">AK</button>
+        <div class="user-dropdown" id="userDropdown">
+          <a href="profile.html" class="dropdown-item">Profil Saya</a>
+          <a href="#pinGrid" class="dropdown-item">Pin Tersimpan</a>
+          <a href="#settings" class="dropdown-item">Pengaturan</a>
+          <div class="dropdown-divider"></div>
+          <a href="login.html" class="dropdown-item danger">Keluar</a>
         </div>
       </div>
     </div>
   </nav>
 
-  <!-- ===== KATEGORI PILLS ===== -->
-  <div class="categories-bar">
-    <div class="categories-scroll">
-      <button class="pill active" data-cat="semua">Semua</button>
-      <button class="pill" data-cat="desain">🎨 Desain</button>
-      <button class="pill" data-cat="teknologi">💻 Teknologi</button>
-      <button class="pill" data-cat="fotografi">📷 Fotografi</button>
-      <button class="pill" data-cat="arsitektur">🏠 Arsitektur</button>
-      <button class="pill" data-cat="makanan">🍳 Makanan</button>
-      <button class="pill" data-cat="fashion">👗 Fashion</button>
-      <button class="pill" data-cat="seni">🖼️ Seni</button>
-      <button class="pill" data-cat="perjalanan">✈️ Perjalanan</button>
-      <button class="pill" data-cat="olahraga">⚽ Olahraga</button>
-      <button class="pill" data-cat="musik">🎵 Musik</button>
-      <button class="pill" data-cat="diy">🔧 DIY</button>
-    </div>
+  <div class="categories-bar" id="categoryBar">
+    <button class="pill active" data-cat="semua">Semua</button>
+    <button class="pill" data-cat="desain">Desain</button>
+    <button class="pill" data-cat="teknologi">Teknologi</button>
+    <button class="pill" data-cat="fotografi">Fotografi</button>
+    <button class="pill" data-cat="arsitektur">Arsitektur</button>
+    <button class="pill" data-cat="makanan">Makanan</button>
+    <button class="pill" data-cat="fashion">Fashion</button>
+    <button class="pill" data-cat="seni">Seni</button>
+    <button class="pill" data-cat="perjalanan">Perjalanan</button>
+    <button class="pill" data-cat="diy">DIY</button>
   </div>
 
-  <!-- ===== MAIN CONTENT ===== -->
   <main class="main-content">
-    <!-- Loading Skeleton -->
-    <div class="masonry-grid" id="skeletonGrid">
-      <div class="skeleton-card"></div>
-      <div class="skeleton-card tall"></div>
-      <div class="skeleton-card medium"></div>
-      <div class="skeleton-card"></div>
-      <div class="skeleton-card tall"></div>
-      <div class="skeleton-card medium"></div>
-      <div class="skeleton-card tall"></div>
-      <div class="skeleton-card"></div>
-    </div>
+    <div class="search-info hidden" id="searchInfo"></div>
+    <div class="masonry-grid" id="pinGrid"></div>
 
-    <!-- Pin Grid -->
-    <div class="masonry-grid" id="pinGrid" style="display:none;"></div>
-
-    <!-- Empty State -->
-    <div class="empty-state" id="emptyState" style="display:none;">
-      <div class="empty-icon">🔍</div>
+    <div class="empty-state hidden" id="emptyState">
+      <div class="empty-icon">?</div>
       <h3>Tidak ada pin ditemukan</h3>
-      <p>Coba kata kunci lain atau pilih kategori berbeda</p>
+      <p>Coba kata kunci lain atau pilih kategori berbeda.</p>
     </div>
 
-    <!-- Load More -->
-    <div class="load-more-wrap">
-      <button class="btn-outline" id="loadMoreBtn">Muat Lebih Banyak</button>
+    <div style="text-align:center;margin:24px 0 48px;">
+      <button class="btn-outline" id="loadMoreBtn" type="button">Muat Lebih Banyak</button>
     </div>
   </main>
 
-  <!-- ===== MODAL DETAIL PIN ===== -->
-  <div class="modal-overlay" id="pinModal">
-    <div class="modal-container">
-      <button class="modal-close" id="closeModal">✕</button>
-      <div class="modal-inner">
-        <div class="modal-img-wrap">
-          <img src="" alt="" id="modalImg" class="modal-img">
-          <div class="modal-img-actions">
-            <button class="btn-icon-lg" id="modalLikeBtn" title="Suka">❤️ <span id="modalLikeCount">0</span></button>
-            <button class="btn-icon-lg" id="modalSaveBtn" title="Simpan">🔖 Simpan</button>
-            <button class="btn-icon-lg" id="modalShareBtn" title="Bagikan">🔗 Bagikan</button>
+  <div class="modal hidden" id="pinModal">
+    <div class="modal-box pin-modal-box">
+      <div class="modal-header">
+        <h3 id="modalTitle">Judul Pin</h3>
+        <button class="modal-close" id="closeModal" type="button">x</button>
+      </div>
+      <div class="modal-body pin-modal-body">
+        <img src="" alt="" id="modalImg" class="pin-modal-img">
+        <p class="pin-detail-desc" id="modalDesc"></p>
+        <div class="pin-author">
+          <div class="pin-author-av-default" id="modalAvatar" style="background:#e60023;">AK</div>
+          <div class="pin-author-info">
+            <div class="pin-author-name" id="modalUser">Pengguna</div>
+            <div class="pin-author-bio">Kreator PinShare</div>
           </div>
+          <button class="btn-outline" id="followBtn" type="button">Ikuti</button>
         </div>
-        <div class="modal-info">
-          <div class="modal-header">
-            <div class="modal-user">
-              <div class="modal-avatar" id="modalUserAvatar">AK</div>
-              <div>
-                <p class="modal-username" id="modalUsername">Pengguna</p>
-                <p class="modal-user-sub">20 pengikut</p>
-              </div>
-              <button class="btn-follow" id="modalFollowBtn">Ikuti</button>
-            </div>
-          </div>
-          <h2 class="modal-title" id="modalTitle">Judul Pin</h2>
-          <p class="modal-desc" id="modalDesc">Deskripsi pin</p>
-          <div class="modal-tags" id="modalTags"></div>
-
-          <!-- Komentar -->
-          <div class="comments-section">
-            <h3 class="comments-title">Komentar (<span id="commentCount">0</span>)</h3>
-            <div class="comments-list" id="commentsList"></div>
-            <div class="comment-form">
-              <div class="comment-input-wrap">
-                <div class="comment-avatar">AK</div>
-                <input type="text" id="commentInput" placeholder="Tambahkan komentar..." class="comment-input">
-                <button id="submitComment" class="comment-submit">Kirim</button>
-              </div>
-            </div>
-          </div>
+        <div class="pin-detail-actions">
+          <button class="like-btn-large" id="modalLikeBtn" type="button">Suka <span id="modalLikeCount">0</span></button>
+          <button class="btn-outline" id="modalSaveBtn" type="button">Simpan</button>
+          <button class="btn-outline" id="modalShareBtn" type="button">Bagikan</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ===== NOTIFIKASI PANEL ===== -->
-  <div class="notif-panel" id="notifPanel">
-    <div class="notif-header">
-      <h3>Notifikasi</h3>
-      <button id="markAllRead">Tandai semua dibaca</button>
+  <div class="modal hidden" id="notifModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Notifikasi</h3>
+        <button class="modal-close" id="closeNotif" type="button">x</button>
+      </div>
+      <div class="modal-body">
+        <div class="notif-list" id="notifList"></div>
+      </div>
     </div>
-    <div class="notif-list" id="notifList"></div>
   </div>
 
-  <!-- ===== TOAST ===== -->
-  <div class="toast-container" id="toastContainer"></div>
-
-  <!-- ===== FAB ===== -->
+  <div class="toast hidden" id="toast"></div>
   <a href="upload.html" class="fab" title="Buat Pin Baru">+</a>
 
-  <script src="js/data.js"></script>
-  <script src="js/utils.js"></script>
-  <script src="js/auth.js"></script>
-  <script src="js/feed.js"></script>
-  <script src="js/modal.js"></script>
-  <script src="js/notifications.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/static-app.js"></script>
 </body>
 </html>

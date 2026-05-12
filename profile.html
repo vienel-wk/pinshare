@@ -5,167 +5,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profil - PinShare</title>
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/profile.css">
+  <link rel="stylesheet" href="css/feed.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-
   <nav class="navbar">
-    <div class="nav-left">
-      <a href="index.html" class="logo"><span class="logo-dot"></span> PinShare</a>
-      <a href="index.html" class="nav-link">Beranda</a>
-      <a href="explore.html" class="nav-link">Jelajah</a>
-    </div>
-    <div class="search-wrap">
-      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
-      </svg>
-      <input type="text" class="search-input" placeholder="Cari...">
-    </div>
-    <div class="nav-right">
-      <a href="upload.html" class="btn-primary">+ Buat Pin</a>
-      <div class="avatar-wrap" id="avatarMenu">
-        <div class="avatar" id="userAvatar">AK</div>
-        <div class="dropdown-menu" id="dropdownMenu">
-          <a href="profile.html">👤 Profil Saya</a>
-          <a href="saved.html">🔖 Pin Tersimpan</a>
-          <a href="settings.html">⚙️ Pengaturan</a>
-          <hr>
-          <a href="login.html" class="logout-link" id="logoutBtn">🚪 Keluar</a>
-        </div>
-      </div>
-    </div>
+    <a href="index.html" class="nav-logo"><span class="nav-logo-dot"></span> PinShare</a>
+    <a href="index.html" class="nav-link">Beranda</a>
+    <a href="upload.html" class="btn-primary">+ Buat Pin</a>
   </nav>
 
-  <!-- PROFILE HEADER -->
-  <div class="profile-hero">
-    <div class="profile-cover" id="profileCover">
-      <button class="change-cover-btn" id="changeCoverBtn">📷 Ganti Sampul</button>
-      <input type="file" id="coverInput" accept="image/*" hidden>
+  <header class="profile-header">
+    <div class="profile-avatar-default" style="background:#e60023;">AK</div>
+    <h1 class="profile-name">Ahmad Kurniawan</h1>
+    <p class="profile-username">@ahmadtkj</p>
+    <p class="profile-bio">Siswa SMK TKJ, suka coding dan desain.</p>
+    <div class="profile-stats">
+      <div class="stat-item"><span class="stat-number">24</span><span class="stat-label">Pin</span></div>
+      <div class="stat-item"><span class="stat-number">128</span><span class="stat-label">Pengikut</span></div>
+      <div class="stat-item"><span class="stat-number">57</span><span class="stat-label">Mengikuti</span></div>
     </div>
-    <div class="profile-info-wrap">
-      <div class="profile-avatar-wrap">
-        <div class="profile-avatar" id="profileAvatar">AK</div>
-        <button class="change-avatar-btn" id="changeAvatarBtn" title="Ganti Foto">📷</button>
-        <input type="file" id="avatarInput" accept="image/*" hidden>
-      </div>
-      <div class="profile-details">
-        <h1 class="profile-name" id="profileName">Ahmad Kurniawan</h1>
-        <p class="profile-username" id="profileUsername">@ahmadtkj</p>
-        <p class="profile-bio" id="profileBio">Siswa SMK TKJ | Suka coding & desain 💻🎨</p>
-        <div class="profile-stats">
-          <div class="stat-item">
-            <span class="stat-num" id="statPins">24</span>
-            <span class="stat-label">Pin</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-num" id="statFollowers">128</span>
-            <span class="stat-label">Pengikut</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-num" id="statFollowing">57</span>
-            <span class="stat-label">Mengikuti</span>
-          </div>
-        </div>
-      </div>
-      <div class="profile-actions">
-        <button class="btn-primary" id="editProfileBtn">✏️ Edit Profil</button>
-        <button class="btn-outline" id="shareProfileBtn">🔗 Bagikan</button>
-      </div>
+    <div class="profile-actions">
+      <button class="btn-primary" type="button">Edit Profil</button>
+      <a href="index.html" class="btn-outline">Lihat Pin</a>
     </div>
-  </div>
+  </header>
 
-  <!-- TABS -->
   <div class="profile-tabs">
-    <button class="profile-tab active" data-tab="pins">📌 Pin Saya</button>
-    <button class="profile-tab" data-tab="saved">🔖 Tersimpan</button>
-    <button class="profile-tab" data-tab="boards">📁 Board</button>
-    <button class="profile-tab" data-tab="liked">❤️ Disukai</button>
+    <button class="profile-tab active" type="button">Pin Saya</button>
+    <button class="profile-tab" type="button">Tersimpan</button>
+    <button class="profile-tab" type="button">Board</button>
   </div>
 
-  <!-- TAB CONTENT -->
-  <div class="profile-content">
-    <div class="tab-pane active" id="tab-pins">
-      <div class="masonry-grid" id="myPinsGrid"></div>
-      <div class="empty-state" id="emptyPins" style="display:none;">
-        <div class="empty-icon">📌</div>
-        <h3>Belum Ada Pin</h3>
-        <p>Buat pin pertamamu sekarang!</p>
-        <a href="upload.html" class="btn-primary" style="margin-top:12px;">+ Buat Pin</a>
-      </div>
+  <main class="main-content">
+    <div class="masonry-grid">
+      <article class="pin-card">
+        <div class="pin-image-wrap"><img src="uploads/img_6a01dce9b973c1.86645048.jpg" alt="Pin saya"></div>
+        <div class="pin-info"><h2 class="pin-title">Inspirasi ruang kerja minimalis</h2></div>
+      </article>
+      <article class="pin-card">
+        <div class="pin-image-wrap"><img src="uploads/img_6a0222586afd32.67139827.jpg" alt="Pin tersimpan"></div>
+        <div class="pin-info"><h2 class="pin-title">Referensi foto produk kreatif</h2></div>
+      </article>
     </div>
-    <div class="tab-pane" id="tab-saved" style="display:none;">
-      <div class="masonry-grid" id="savedPinsGrid"></div>
-    </div>
-    <div class="tab-pane" id="tab-boards" style="display:none;">
-      <div class="boards-grid" id="boardsGrid"></div>
-      <button class="btn-outline" id="createBoardBtn" style="margin:24px auto;display:block;">+ Buat Board Baru</button>
-    </div>
-    <div class="tab-pane" id="tab-liked" style="display:none;">
-      <div class="masonry-grid" id="likedPinsGrid"></div>
-    </div>
-  </div>
-
-  <!-- Edit Profile Modal -->
-  <div class="modal-overlay" id="editProfileModal" style="display:none;">
-    <div class="modal-container small">
-      <button class="modal-close" id="closeEditModal">✕</button>
-      <div style="padding:28px;">
-        <h2>Edit Profil</h2>
-        <div class="form-group" style="margin-top:20px;">
-          <label class="form-label">Nama Lengkap</label>
-          <input type="text" class="form-input" id="editName" value="Ahmad Kurniawan">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Username</label>
-          <input type="text" class="form-input" id="editUsername" value="@ahmadtkj">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Bio</label>
-          <textarea class="form-textarea" id="editBio" rows="3">Siswa SMK TKJ | Suka coding & desain 💻🎨</textarea>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Website</label>
-          <input type="url" class="form-input" id="editWebsite" placeholder="https://website-kamu.com">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Lokasi</label>
-          <input type="text" class="form-input" id="editLocation" placeholder="Surabaya, Indonesia">
-        </div>
-        <button class="btn-primary full-width" id="saveProfileBtn">Simpan Perubahan</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="pinModal" style="display:none;">
-    <div class="modal-container">
-      <button class="modal-close" id="closeModal">✕</button>
-      <div class="modal-inner">
-        <div class="modal-img-wrap">
-          <img src="" alt="" id="modalImg" class="modal-img">
-        </div>
-        <div class="modal-info">
-          <h2 class="modal-title" id="modalTitle"></h2>
-          <p class="modal-desc" id="modalDesc"></p>
-          <div class="modal-img-actions">
-            <button class="btn-icon-lg" id="modalLikeBtn">❤️ <span id="modalLikeCount">0</span></button>
-            <button class="btn-icon-lg" id="modalSaveBtn">🔖 Simpan</button>
-            <button class="btn-icon-lg danger" id="deletePinBtn">🗑️ Hapus</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="toast-container" id="toastContainer"></div>
-  <a href="upload.html" class="fab">+</a>
-
-  <script src="js/data.js"></script>
-  <script src="js/utils.js"></script>
-  <script src="js/auth.js"></script>
-  <script src="js/feed.js"></script>
-  <script src="js/modal.js"></script>
-  <script src="js/profile.js"></script>
-  <script src="js/app.js"></script>
+  </main>
 </body>
 </html>
