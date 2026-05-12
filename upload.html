@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buat Pin - PinShare</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/upload.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <a href="index.html" class="logo"><span class="logo-dot"></span> PinShare</a>
+    </div>
+    <div class="nav-right">
+      <button class="btn-outline" id="draftBtn">Simpan Draft</button>
+      <button class="btn-primary" id="publishBtn">Terbitkan</button>
+      <a href="index.html" class="icon-nav" title="Tutup">✕</a>
+    </div>
+  </nav>
+
+  <div class="upload-page">
+    <div class="upload-container">
+
+      <!-- Panel Kiri: Preview -->
+      <div class="upload-preview-panel">
+        <div class="drop-zone" id="dropZone">
+          <div class="drop-content" id="dropContent">
+            <div class="drop-icon">📁</div>
+            <h3>Seret & Lepas Gambar</h3>
+            <p>atau klik untuk pilih file</p>
+            <span class="file-types">PNG, JPG, GIF, WEBP hingga 20MB</span>
+            <input type="file" id="fileInput" accept="image/*" hidden>
+            <button class="btn-outline upload-btn" id="selectFileBtn">Pilih File</button>
+          </div>
+          <div class="preview-content" id="previewContent" style="display:none;">
+            <img id="previewImg" src="" alt="Preview" class="preview-image">
+            <div class="preview-actions">
+              <button class="preview-action-btn" id="changeImageBtn">🔄 Ganti</button>
+              <button class="preview-action-btn danger" id="removeImageBtn">🗑️ Hapus</button>
+            </div>
+            <div class="img-info" id="imgInfo"></div>
+          </div>
+        </div>
+        <div class="upload-progress" id="uploadProgress" style="display:none;">
+          <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+          <span id="progressText">Mengunggah... 0%</span>
+        </div>
+      </div>
+
+      <!-- Panel Kanan: Form -->
+      <div class="upload-form-panel">
+        <h1 class="upload-title">Buat Pin Baru</h1>
+
+        <div class="form-group">
+          <label class="form-label">Judul <span class="required">*</span></label>
+          <input type="text" id="pinTitle" class="form-input" placeholder="Beri judul yang menarik..." maxlength="100">
+          <span class="char-count" id="titleCount">0/100</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Deskripsi</label>
+          <textarea id="pinDesc" class="form-textarea" placeholder="Ceritakan tentang pin ini..." rows="4" maxlength="500"></textarea>
+          <span class="char-count" id="descCount">0/500</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Link Tujuan</label>
+          <div class="input-prefix-wrap">
+            <span class="input-prefix">🔗</span>
+            <input type="url" id="pinLink" class="form-input prefixed" placeholder="https://website-kamu.com">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Kategori <span class="required">*</span></label>
+          <select id="pinCategory" class="form-select">
+            <option value="">-- Pilih Kategori --</option>
+            <option value="desain">🎨 Desain</option>
+            <option value="teknologi">💻 Teknologi</option>
+            <option value="fotografi">📷 Fotografi</option>
+            <option value="arsitektur">🏠 Arsitektur</option>
+            <option value="makanan">🍳 Makanan</option>
+            <option value="fashion">👗 Fashion</option>
+            <option value="seni">🖼️ Seni</option>
+            <option value="perjalanan">✈️ Perjalanan</option>
+            <option value="olahraga">⚽ Olahraga</option>
+            <option value="musik">🎵 Musik</option>
+            <option value="diy">🔧 DIY</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Tag</label>
+          <div class="tags-input-wrap">
+            <div class="tags-display" id="tagsDisplay"></div>
+            <input type="text" id="tagInput" class="tag-input" placeholder="Ketik tag lalu Enter...">
+          </div>
+          <span class="form-hint">Maksimal 10 tag, tekan Enter untuk menambah</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Tambahkan ke Board</label>
+          <div class="boards-select" id="boardsSelect">
+            <div class="board-option selected" data-board="default">
+              <span class="board-thumb">📌</span>
+              <span class="board-name">Semua Pin</span>
+            </div>
+            <div class="board-option" data-board="favorit">
+              <span class="board-thumb">⭐</span>
+              <span class="board-name">Favorit</span>
+            </div>
+            <div class="board-option" data-board="inspirasi">
+              <span class="board-thumb">💡</span>
+              <span class="board-name">Inspirasi</span>
+            </div>
+            <button class="board-add" id="addBoardBtn">+ Board Baru</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Pengaturan Privasi</label>
+          <div class="privacy-options">
+            <label class="privacy-opt selected" data-val="public">
+              <input type="radio" name="privacy" value="public" checked>
+              <span>🌐 Publik</span>
+              <small>Semua orang bisa melihat</small>
+            </label>
+            <label class="privacy-opt" data-val="followers">
+              <input type="radio" name="privacy" value="followers">
+              <span>👥 Pengikut</span>
+              <small>Hanya pengikutmu</small>
+            </label>
+            <label class="privacy-opt" data-val="private">
+              <input type="radio" name="privacy" value="private">
+              <span>🔒 Pribadi</span>
+              <small>Hanya kamu</small>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="toggle-group">
+            <span class="toggle-label">Izinkan Komentar</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="allowComments" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </label>
+          <label class="toggle-group">
+            <span class="toggle-label">Izinkan Disimpan Orang Lain</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="allowSave" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </label>
+        </div>
+
+        <div class="publish-actions">
+          <button class="btn-outline full-width" id="previewPinBtn">👁 Preview Pin</button>
+          <button class="btn-primary full-width" id="publishBtnBottom">🚀 Terbitkan Pin</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Preview Modal -->
+  <div class="modal-overlay" id="previewModal" style="display:none;">
+    <div class="modal-container small">
+      <button class="modal-close" id="closePreviewModal">✕</button>
+      <h2 style="padding:16px;">Preview Pin</h2>
+      <div class="preview-pin-card" id="previewPinCard"></div>
+    </div>
+  </div>
+
+  <!-- Add Board Modal -->
+  <div class="modal-overlay" id="addBoardModal" style="display:none;">
+    <div class="modal-container small">
+      <button class="modal-close" id="closeAddBoard">✕</button>
+      <div style="padding:24px;">
+        <h2>Board Baru</h2>
+        <div class="form-group" style="margin-top:16px;">
+          <label class="form-label">Nama Board</label>
+          <input type="text" class="form-input" id="newBoardName" placeholder="Contoh: Inspirasi Kamar">
+        </div>
+        <button class="btn-primary full-width" id="saveNewBoard">Buat Board</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+  <script src="js/data.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/upload.js"></script>
+</body>
+</html>

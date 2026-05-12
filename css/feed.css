@@ -1,0 +1,618 @@
+/* =============================================
+   feed.css — Halaman Pin Detail, Upload, Profil, Auth
+   ============================================= */
+
+/* =============================================
+   HALAMAN LOGIN / REGISTER
+   ============================================= */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  padding: 20px;
+}
+
+.auth-card {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  padding: 40px 36px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: var(--shadow-md);
+}
+
+.auth-logo {
+  text-align: center;
+  margin-bottom: 28px;
+}
+.auth-logo h1 {
+  font-family: var(--font-display);
+  font-size: 32px;
+  color: var(--accent);
+}
+.auth-logo p {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.auth-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--pill-bg);
+  border-radius: var(--radius-sm);
+  padding: 4px;
+  margin-bottom: 24px;
+}
+.auth-tab {
+  flex: 1;
+  text-align: center;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--text-muted);
+  border: none;
+  background: none;
+  transition: background .15s, color .15s;
+}
+.auth-tab.active {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-sm);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-muted);
+  font-size: 13px;
+  margin: 20px 0;
+}
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.auth-footer a { color: var(--accent); font-weight: 600; }
+
+.alert {
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+.alert-error   { background: #fdecea; color: #c62828; border: 1px solid #f5c6c4; }
+.alert-success { background: #e8f5e9; color: #2e7d32; border: 1px solid #c3e6cb; }
+
+/* =============================================
+   HALAMAN UPLOAD PIN
+   ============================================= */
+.upload-page {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.upload-page h2 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  margin-bottom: 28px;
+}
+
+.upload-layout {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.upload-preview-area {
+  border: 3px dashed var(--border);
+  border-radius: var(--radius-md);
+  min-height: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  overflow: hidden;
+  position: relative;
+  background: var(--pill-bg);
+}
+.upload-preview-area:hover {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+.upload-preview-area.drag-over {
+  border-color: var(--accent);
+  background: var(--accent-light);
+  transform: scale(1.01);
+}
+
+.upload-placeholder {
+  text-align: center;
+  padding: 24px;
+  color: var(--text-muted);
+}
+.upload-placeholder .upload-icon { font-size: 48px; margin-bottom: 12px; }
+.upload-placeholder h4 { font-size: 16px; color: var(--text); margin-bottom: 6px; }
+.upload-placeholder p  { font-size: 13px; }
+
+#previewImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+}
+
+#fileInput { display: none; }
+
+.upload-form-card {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  border: 1px solid var(--border);
+}
+
+@media (max-width: 700px) {
+  .upload-layout { grid-template-columns: 1fr; }
+  .upload-preview-area { min-height: 260px; }
+}
+
+/* =============================================
+   HALAMAN DETAIL PIN
+   ============================================= */
+.pin-detail-page {
+  max-width: 960px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.pin-detail-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.pin-detail-image {
+  position: relative;
+}
+.pin-detail-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  max-height: 700px;
+  min-height: 300px;
+}
+
+.pin-detail-right {
+  padding: 32px 32px 32px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  max-height: 700px;
+}
+
+.pin-detail-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.like-btn-large {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 24px;
+  border: 2px solid var(--border);
+  background: none;
+  font-size: 15px;
+  font-weight: 600;
+  transition: border-color .15s, background .15s;
+}
+.like-btn-large:hover   { border-color: var(--accent); background: var(--accent-light); }
+.like-btn-large.liked   { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
+
+.pin-detail-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.pin-detail-desc {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+.pin-detail-source a {
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pin-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.pin-author-av {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.pin-author-av-default {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+  color: white;
+}
+.pin-author-info { flex: 1; }
+.pin-author-name {
+  font-weight: 600;
+  font-size: 15px;
+}
+.pin-author-bio {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* Komentar */
+.comments-section h4 {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.comment-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.comment-input {
+  flex: 1;
+  border: 2px solid var(--border);
+  border-radius: 24px;
+  padding: 10px 16px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  outline: none;
+  resize: none;
+  transition: border-color .15s;
+}
+.comment-input:focus { border-color: var(--accent); }
+
+.comment-send {
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 42px; height: 42px;
+  font-size: 18px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background .15s;
+}
+.comment-send:hover { background: var(--accent-hover); }
+
+.comment-list { display: flex; flex-direction: column; gap: 14px; }
+
+.comment-item {
+  display: flex;
+  gap: 10px;
+}
+.comment-av {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.comment-av-default {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 600; color: white;
+}
+.comment-bubble {
+  flex: 1;
+}
+.comment-username {
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+.comment-text {
+  font-size: 14px;
+  line-height: 1.5;
+}
+.comment-meta {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.comment-reply-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 0;
+  cursor: pointer;
+}
+.comment-reply-btn:hover { color: var(--text); }
+
+/* Replies indented */
+.comment-replies {
+  margin-left: 44px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+@media (max-width: 700px) {
+  .pin-detail-wrap { grid-template-columns: 1fr; }
+  .pin-detail-right { padding: 20px; max-height: none; }
+}
+
+/* =============================================
+   HALAMAN PROFIL USER
+   ============================================= */
+.profile-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 40px 20px;
+  text-align: center;
+}
+.profile-avatar {
+  width: 96px; height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 16px;
+}
+.profile-avatar-default {
+  width: 96px; height: 96px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px; font-weight: 700; color: white;
+  margin: 0 auto 16px;
+}
+.profile-name {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+}
+.profile-username {
+  color: var(--text-muted);
+  font-size: 15px;
+  margin: 4px 0 12px;
+}
+.profile-bio {
+  font-size: 15px;
+  color: var(--text-muted);
+  max-width: 400px;
+  margin: 0 auto 16px;
+}
+.profile-stats {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin: 16px 0;
+}
+.stat-item { text-align: center; }
+.stat-number {
+  font-size: 22px;
+  font-weight: 700;
+  display: block;
+}
+.stat-label {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.profile-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+/* Profile tabs */
+.profile-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  margin-bottom: 24px;
+}
+.profile-tab {
+  padding: 14px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  border: none;
+  background: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  transition: color .15s, border-color .15s;
+}
+.profile-tab.active, .profile-tab:hover {
+  color: var(--text);
+  border-bottom-color: var(--text);
+}
+
+/* =============================================
+   BOARD CARDS
+   ============================================= */
+.boards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  padding: 0 20px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.board-card {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+  border: 1px solid var(--border);
+}
+.board-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+
+.board-cover {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  aspect-ratio: 4/3;
+  gap: 3px;
+  overflow: hidden;
+}
+.board-cover-img {
+  background: var(--pill-bg);
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+}
+.board-cover-img:first-child { grid-row: span 2; }
+.board-cover-img img { width: 100%; height: 100%; object-fit: cover; }
+
+.board-card-info {
+  padding: 12px 14px;
+}
+.board-card-name { font-weight: 600; font-size: 14px; }
+.board-card-count { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+/* =============================================
+   NOTIFIKASI
+   ============================================= */
+.notif-page {
+  max-width: 600px;
+  margin: 32px auto;
+  padding: 0 20px;
+}
+.notif-page h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.notif-list { display: flex; flex-direction: column; gap: 4px; }
+
+.notif-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  transition: background .15s;
+  cursor: pointer;
+}
+.notif-item:hover { background: var(--pill-bg); }
+.notif-item.unread { background: #fff5f5; }
+.notif-item.unread:hover { background: #ffe8e8; }
+
+.notif-av {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.notif-av-default {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; color: white;
+  flex-shrink: 0;
+}
+.notif-text { flex: 1; font-size: 14px; line-height: 1.5; }
+.notif-text strong { font-weight: 600; }
+.notif-time { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+
+.notif-pin-thumb {
+  width: 48px; height: 48px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* =============================================
+   SETTINGS / EDIT PROFIL
+   ============================================= */
+.settings-page {
+  max-width: 640px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+.settings-page h2 {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 28px;
+}
+.settings-section {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
+}
+.settings-section h3 {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.avatar-upload-wrap {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+.avatar-upload-preview {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.avatar-upload-preview-default {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; font-weight: 700; color: white;
+}
