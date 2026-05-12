@@ -77,7 +77,7 @@
         <button class="modal-close" id="closeModal" type="button">x</button>
       </div>
       <div class="modal-body pin-modal-body">
-        <img src="" alt="" id="modalImg" class="pin-modal-img">
+        <div id="modalVisual" class="pin-modal-visual"></div>
         <p class="pin-detail-desc" id="modalDesc"></p>
         <div class="pin-author">
           <div class="pin-author-av-default" id="modalAvatar" style="background:#e60023;">AK</div>
@@ -92,6 +92,14 @@
           <button class="btn-outline" id="modalSaveBtn" type="button">Simpan</button>
           <button class="btn-outline" id="modalShareBtn" type="button">Bagikan</button>
         </div>
+        <section class="comments-section">
+          <h4>Komentar (<span id="commentCount">0</span>)</h4>
+          <div class="comment-list" id="commentList"></div>
+          <form class="comment-form" id="commentForm">
+            <input class="comment-input" id="commentInput" type="text" placeholder="Tambahkan komentar..." autocomplete="off">
+            <button class="comment-send" type="submit">Kirim</button>
+          </form>
+        </section>
       </div>
     </div>
   </div>

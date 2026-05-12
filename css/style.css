@@ -302,6 +302,23 @@ button { cursor: pointer; font-family: var(--font-body); }
 }
 .pin-card:hover .pin-image-wrap img { transform: scale(1.03); }
 
+.pin-placeholder {
+  min-height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.pin-placeholder span {
+  background: rgba(255,255,255,.72);
+  border-radius: 999px;
+  padding: 8px 14px;
+}
+
 .pin-overlay {
   position: absolute;
   inset: 0;
@@ -496,6 +513,18 @@ button { cursor: pointer; font-family: var(--font-body); }
   object-fit: contain;
   border-radius: var(--radius-sm);
   background: var(--pill-bg);
+}
+
+.pin-modal-visual {
+  min-height: 320px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
 /* =============================================

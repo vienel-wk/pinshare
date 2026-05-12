@@ -4,7 +4,7 @@ const pins = [
     title: 'Inspirasi ruang kerja minimalis',
     desc: 'Moodboard ruang kerja kecil dengan warna netral, rak sederhana, dan pencahayaan hangat.',
     category: 'desain',
-    image: 'uploads/img_6a01dce9b973c1.86645048.jpg',
+    color: '#f6d7df',
     user: 'Ahmad Kurniawan',
     initials: 'AK',
     likes: 128
@@ -14,7 +14,7 @@ const pins = [
     title: 'Referensi foto produk kreatif',
     desc: 'Contoh komposisi foto produk untuk katalog, media sosial, dan toko online.',
     category: 'fotografi',
-    image: 'uploads/img_6a0222586afd32.67139827.jpg',
+    color: '#d7e7f6',
     user: 'Naya Studio',
     initials: 'NS',
     likes: 86
@@ -24,7 +24,7 @@ const pins = [
     title: 'Layout aplikasi sederhana',
     desc: 'Ide tampilan dashboard yang rapi untuk tugas sekolah atau proyek portfolio.',
     category: 'teknologi',
-    image: 'uploads/img_6a01dce9b973c1.86645048.jpg',
+    color: '#dff0df',
     user: 'Rafi Dev',
     initials: 'RD',
     likes: 74
@@ -34,7 +34,7 @@ const pins = [
     title: 'Dekorasi kamar mungil',
     desc: 'Kombinasi storage, tanaman kecil, dan poster untuk kamar yang terasa lega.',
     category: 'arsitektur',
-    image: 'uploads/img_6a0222586afd32.67139827.jpg',
+    color: '#f3e5d8',
     user: 'Dina Home',
     initials: 'DH',
     likes: 211
@@ -44,7 +44,7 @@ const pins = [
     title: 'Resep sarapan cepat',
     desc: 'Inspirasi menu praktis yang tetap terlihat cantik untuk difoto.',
     category: 'makanan',
-    image: 'uploads/img_6a01dce9b973c1.86645048.jpg',
+    color: '#f7ead0',
     user: 'Kitchen Lab',
     initials: 'KL',
     likes: 95
@@ -54,7 +54,7 @@ const pins = [
     title: 'Warna outfit harian',
     desc: 'Referensi warna pakaian yang mudah dipadukan untuk aktivitas sehari-hari.',
     category: 'fashion',
-    image: 'uploads/img_6a0222586afd32.67139827.jpg',
+    color: '#eadcf3',
     user: 'Mira Style',
     initials: 'MS',
     likes: 63
@@ -64,7 +64,7 @@ const pins = [
     title: 'Sketsa poster acara',
     desc: 'Ide visual poster dengan tipografi besar dan komposisi yang mudah dibaca.',
     category: 'seni',
-    image: 'uploads/img_6a01dce9b973c1.86645048.jpg',
+    color: '#dfe7dc',
     user: 'Arka Art',
     initials: 'AA',
     likes: 147
@@ -74,7 +74,7 @@ const pins = [
     title: 'Catatan perjalanan singkat',
     desc: 'Cara menyusun dokumentasi perjalanan agar rapi dan enak dilihat.',
     category: 'perjalanan',
-    image: 'uploads/img_6a0222586afd32.67139827.jpg',
+    color: '#d9ece8',
     user: 'Lana Trip',
     initials: 'LT',
     likes: 104
@@ -91,6 +91,7 @@ let activeCategory = 'semua';
 let searchTerm = '';
 let visibleCount = 6;
 let activePin = null;
+let comments = JSON.parse(localStorage.getItem('pinshare-comments') || '{}');
 
 const pinGrid = document.getElementById('pinGrid');
 const emptyState = document.getElementById('emptyState');
@@ -99,6 +100,10 @@ const searchForm = document.getElementById('searchForm');
 const searchInfo = document.getElementById('searchInfo');
 const loadMoreBtn = document.getElementById('loadMoreBtn');
 const toast = document.getElementById('toast');
+const commentForm = document.getElementById('commentForm');
+const commentInput = document.getElementById('commentInput');
+const commentList = document.getElementById('commentList');
+const commentCount = document.getElementById('commentCount');
 
 function escapeHtml(value) {
   const div = document.createElement('div');
@@ -129,7 +134,9 @@ function renderPins() {
   pinGrid.innerHTML = visiblePins.map((pin) => `
     <article class="pin-card" data-pin-id="${pin.id}">
       <div class="pin-image-wrap">
-        <img src="${pin.image}" alt="${escapeHtml(pin.title)}" loading="lazy">
+        <div class="pin-placeholder" style="background:${pin.color};">
+          <span>${escapeHtml(pin.category)}</span>
+        </div>
         <div class="pin-overlay">
           <button class="btn-save" type="button" data-action="save" data-pin-id="${pin.id}">Simpan</button>
           <div class="overlay-actions">
@@ -166,13 +173,41 @@ function openPin(pinId) {
 
   document.getElementById('modalTitle').textContent = activePin.title;
   document.getElementById('modalDesc').textContent = activePin.desc;
-  document.getElementById('modalImg').src = activePin.image;
-  document.getElementById('modalImg').alt = activePin.title;
+  const modalVisual = document.getElementById('modalVisual');
+  modalVisual.style.background = activePin.color;
+  modalVisual.textContent = activePin.category;
   document.getElementById('modalAvatar').textContent = activePin.initials;
   document.getElementById('modalUser').textContent = activePin.user;
   document.getElementById('modalLikeCount').textContent = activePin.likes;
+  renderComments();
   document.getElementById('pinModal').classList.remove('hidden');
   document.body.style.overflow = 'hidden';
+}
+
+function saveComments() {
+  localStorage.setItem('pinshare-comments', JSON.stringify(comments));
+}
+
+function renderComments() {
+  if (!activePin) return;
+  const pinComments = comments[activePin.id] || [];
+  commentCount.textContent = pinComments.length;
+
+  if (pinComments.length === 0) {
+    commentList.innerHTML = '<p class="text-muted">Belum ada komentar.</p>';
+    return;
+  }
+
+  commentList.innerHTML = pinComments.map((comment) => `
+    <div class="comment-item">
+      <div class="comment-av-default" style="background:#e60023;">AK</div>
+      <div class="comment-bubble">
+        <div class="comment-username">Kamu</div>
+        <div class="comment-text">${escapeHtml(comment.text)}</div>
+        <div class="comment-meta">${escapeHtml(comment.time)}</div>
+      </div>
+    </div>
+  `).join('');
 }
 
 function closeModal(id) {
@@ -247,6 +282,31 @@ document.getElementById('modalLikeBtn').addEventListener('click', () => {
 document.getElementById('modalSaveBtn').addEventListener('click', () => showToast('Pin disimpan.'));
 document.getElementById('followBtn').addEventListener('click', (event) => {
   event.target.textContent = event.target.textContent === 'Ikuti' ? 'Mengikuti' : 'Ikuti';
+});
+
+commentForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  if (!activePin) return;
+
+  const text = commentInput.value.trim();
+  if (!text) return;
+
+  const pinComments = comments[activePin.id] || [];
+  pinComments.unshift({
+    text,
+    time: new Date().toLocaleString('id-ID', {
+      day: '2-digit',
+      month: 'short',
+      hour: '2-digit',
+      minute: '2-digit'
+    })
+  });
+
+  comments[activePin.id] = pinComments;
+  commentInput.value = '';
+  saveComments();
+  renderComments();
+  showToast('Komentar ditambahkan.');
 });
 
 function shareCurrentPin(pin = activePin) {
