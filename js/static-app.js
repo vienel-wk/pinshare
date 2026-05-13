@@ -93,6 +93,20 @@ function initialsFromName(name) {
   return (name || 'PS').slice(0, 2).toUpperCase();
 }
 
+function currentUser() {
+  if (typeof getSession === 'function') return getSession();
+  return JSON.parse(localStorage.getItem('pinshare-session') || 'null');
+}
+
+function commentAuthor(comment) {
+  const session = currentUser();
+  const name = comment.name || session?.name || 'Pengguna';
+  return {
+    name,
+    initials: comment.initials || initialsFromName(name)
+  };
+}
+
 function normalizedUserPins() {
   return getUserPins().map((pin) => ({
     id: pin.id,
@@ -215,16 +229,19 @@ function renderComments() {
     return;
   }
 
-  commentList.innerHTML = pinComments.map((comment) => `
+  commentList.innerHTML = pinComments.map((comment) => {
+    const author = commentAuthor(comment);
+    return `
     <div class="comment-item">
-      <div class="comment-av-default" style="background:#e60023;">AK</div>
+      <div class="comment-av-default" style="background:#e60023;">${escapeHtml(author.initials)}</div>
       <div class="comment-bubble">
-        <div class="comment-username">Kamu</div>
+        <div class="comment-username">${escapeHtml(author.name)}</div>
         <div class="comment-text">${escapeHtml(comment.text)}</div>
         <div class="comment-meta">${escapeHtml(comment.time)}</div>
       </div>
     </div>
-  `).join('');
+  `;
+  }).join('');
 }
 
 function closeModal(id) {
@@ -305,10 +322,14 @@ commentForm.addEventListener('submit', (event) => {
 
   const text = commentInput.value.trim();
   if (!text) return;
+  const session = currentUser();
 
   const pinComments = comments[activePin.id] || [];
   pinComments.unshift({
     text,
+    name: session?.name || 'Pengguna',
+    email: session?.email || '',
+    initials: initialsFromName(session?.name || 'PS'),
     time: new Date().toLocaleString('id-ID', {
       day: '2-digit',
       month: 'short',
