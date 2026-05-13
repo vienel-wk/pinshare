@@ -47,6 +47,22 @@ function updateAuthUi() {
   if (avatarBtn && session) {
     avatarBtn.textContent = session.name.slice(0, 2).toUpperCase();
   }
+
+  const profileName = document.querySelector('.profile-name');
+  const profileUsername = document.querySelector('.profile-username');
+  const profileAvatar = document.querySelector('.profile-avatar-default');
+  if (session && profileName && profileUsername && profileAvatar) {
+    profileName.textContent = session.name;
+    profileUsername.textContent = `@${session.email.split('@')[0]}`;
+    profileAvatar.textContent = session.name.slice(0, 2).toUpperCase();
+  }
+}
+
+function guardProtectedPage() {
+  const needsLogin = document.body.dataset.requireAuth !== undefined;
+  if (needsLogin && !getSession()) {
+    window.location.href = 'login.html';
+  }
 }
 
 function setupLogout() {
@@ -128,3 +144,4 @@ function setupLoginPage() {
 setupLoginPage();
 setupLogout();
 updateAuthUi();
+guardProtectedPage();

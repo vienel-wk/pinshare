@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="css/feed.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
-<body>
+<body data-require-auth>
   <nav class="navbar">
     <a href="index.html" class="nav-logo"><span class="nav-logo-dot"></span> PinShare</a>
     <a href="index.html" class="nav-link">Beranda</a>
@@ -25,7 +25,7 @@
         <div class="upload-placeholder" id="uploadPlaceholder">
           <div class="upload-icon">+</div>
           <h4>Pilih gambar</h4>
-          <p>Preview akan muncul di sini. Di GitHub Pages, data ini hanya demo dan tidak tersimpan ke server.</p>
+          <p>Preview akan muncul di sini. Setelah diterbitkan, foto masuk ke Profil > Pin Saya.</p>
         </div>
         <input type="file" id="fileInput" accept="image/*">
       </label>
@@ -49,12 +49,13 @@
             <option>Makanan</option>
           </select>
         </div>
-        <button class="btn-primary" id="publishDemo" type="button">Terbitkan Demo</button>
+        <button class="btn-primary" id="publishDemo" type="button">Terbitkan Pin</button>
       </section>
     </div>
   </main>
 
   <div class="toast hidden" id="toast"></div>
+  <script src="js/static-auth.js"></script>
   <script src="js/static-upload.js"></script>
 </body>
 </html>

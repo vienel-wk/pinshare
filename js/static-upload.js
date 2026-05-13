@@ -12,6 +12,7 @@ function showToast(message, type = 'success') {
 const fileInput = document.getElementById('fileInput');
 const previewImg = document.getElementById('previewImg');
 const uploadPlaceholder = document.getElementById('uploadPlaceholder');
+let selectedImage = '';
 
 if (fileInput) {
   fileInput.addEventListener('change', () => {
@@ -23,6 +24,7 @@ if (fileInput) {
     }
     const reader = new FileReader();
     reader.onload = (event) => {
+      selectedImage = event.target.result;
       previewImg.src = event.target.result;
       previewImg.style.display = 'block';
       uploadPlaceholder.style.display = 'none';
@@ -34,17 +36,42 @@ if (fileInput) {
 const publishDemo = document.getElementById('publishDemo');
 if (publishDemo) {
   publishDemo.addEventListener('click', () => {
-    showToast('Demo berhasil. Untuk menyimpan sungguhan perlu hosting PHP/database.');
-  });
-}
+    const session = typeof getSession === 'function' ? getSession() : null;
+    const title = document.getElementById('pinTitle').value.trim();
+    const desc = document.getElementById('pinDesc').value.trim();
+    const category = document.getElementById('pinCategory').value;
 
-const demoLogin = document.getElementById('demoLogin');
-if (demoLogin) {
-  demoLogin.addEventListener('submit', (event) => {
-    event.preventDefault();
-    showToast('Masuk demo berhasil.');
+    if (!session) {
+      window.location.href = 'login.html';
+      return;
+    }
+
+    if (!selectedImage) {
+      showToast('Pilih foto terlebih dahulu.', 'error');
+      return;
+    }
+
+    if (!title) {
+      showToast('Judul pin wajib diisi.', 'error');
+      return;
+    }
+
+    const userPins = JSON.parse(localStorage.getItem('pinshare-user-pins') || '[]');
+    userPins.unshift({
+      id: `user-${Date.now()}`,
+      title,
+      desc,
+      category,
+      image: selectedImage,
+      ownerEmail: session.email,
+      ownerName: session.name,
+      createdAt: new Date().toISOString()
+    });
+    localStorage.setItem('pinshare-user-pins', JSON.stringify(userPins));
+
+    showToast('Pin berhasil diterbitkan.');
     window.setTimeout(() => {
-      window.location.href = 'index.html';
+      window.location.href = 'profile.html';
     }, 800);
   });
 }

@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="css/feed.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
-<body>
+<body data-require-auth>
   <nav class="navbar">
     <a href="index.html" class="nav-logo"><span class="nav-logo-dot"></span> PinShare</a>
     <a href="index.html" class="nav-link">Beranda</a>
@@ -25,7 +25,7 @@
     <p class="profile-username">@ahmadtkj</p>
     <p class="profile-bio">Siswa SMK TKJ, suka coding dan desain.</p>
     <div class="profile-stats">
-      <div class="stat-item"><span class="stat-number">24</span><span class="stat-label">Pin</span></div>
+      <div class="stat-item"><span class="stat-number" id="profilePinCount">0</span><span class="stat-label">Pin</span></div>
       <div class="stat-item"><span class="stat-number">128</span><span class="stat-label">Pengikut</span></div>
       <div class="stat-item"><span class="stat-number">57</span><span class="stat-label">Mengikuti</span></div>
     </div>
@@ -36,27 +36,21 @@
   </header>
 
   <div class="profile-tabs">
-    <button class="profile-tab active" type="button">Pin Saya</button>
-    <button class="profile-tab" type="button">Tersimpan</button>
-    <button class="profile-tab" type="button">Board</button>
+    <button class="profile-tab active" type="button" data-profile-tab="mine">Pin Saya</button>
+    <button class="profile-tab" type="button" data-profile-tab="saved">Tersimpan</button>
+    <button class="profile-tab" type="button" data-profile-tab="boards">Board</button>
   </div>
 
   <main class="main-content">
-    <div class="masonry-grid">
-      <article class="pin-card">
-        <div class="pin-image-wrap">
-          <div class="pin-placeholder" style="background:#f6d7df;"><span>Desain</span></div>
-        </div>
-        <div class="pin-info"><h2 class="pin-title">Inspirasi ruang kerja minimalis</h2></div>
-      </article>
-      <article class="pin-card">
-        <div class="pin-image-wrap">
-          <div class="pin-placeholder" style="background:#d7e7f6;"><span>Fotografi</span></div>
-        </div>
-        <div class="pin-info"><h2 class="pin-title">Referensi foto produk kreatif</h2></div>
-      </article>
+    <div class="masonry-grid" id="profilePinGrid"></div>
+    <div class="empty-state hidden" id="profileEmptyState">
+      <div class="empty-icon">+</div>
+      <h3 id="profileEmptyTitle">Belum ada pin</h3>
+      <p id="profileEmptyText">Upload foto pertama kamu agar muncul di Pin Saya.</p>
+      <a href="upload.html" class="btn-primary" id="profileEmptyAction">+ Buat Pin</a>
     </div>
   </main>
   <script src="js/static-auth.js"></script>
+  <script src="js/static-profile.js"></script>
 </body>
 </html>
