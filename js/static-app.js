@@ -1,4 +1,4 @@
-const pins = [
+const samplePins = [
   {
     id: 1,
     title: 'Inspirasi ruang kerja minimalis',
@@ -127,11 +127,11 @@ function savePinState() {
 }
 
 function isLiked(pinId) {
-  return likedPins.includes(Number(pinId));
+  return likedPins.map(String).includes(String(pinId));
 }
 
 function isSaved(pinId) {
-  return savedPins.includes(Number(pinId));
+  return savedPins.map(String).includes(String(pinId));
 }
 
 function displayedLikes(pin) {
@@ -139,9 +139,9 @@ function displayedLikes(pin) {
 }
 
 function toggleLike(pinId) {
-  const id = Number(pinId);
+  const id = String(pinId);
   if (isLiked(id)) {
-    likedPins = likedPins.filter((item) => item !== id);
+    likedPins = likedPins.filter((item) => String(item) !== id);
     showToast('Suka dibatalkan.');
   } else {
     likedPins.push(id);
@@ -153,9 +153,9 @@ function toggleLike(pinId) {
 }
 
 function toggleSave(pinId) {
-  const id = Number(pinId);
+  const id = String(pinId);
   if (isSaved(id)) {
-    savedPins = savedPins.filter((item) => item !== id);
+    savedPins = savedPins.filter((item) => String(item) !== id);
     showToast('Simpan dibatalkan.');
   } else {
     savedPins.push(id);
@@ -166,8 +166,44 @@ function toggleSave(pinId) {
   if (activePin && activePin.id === id) syncModalActions();
 }
 
+function getUserPins() {
+  return JSON.parse(localStorage.getItem('pinshare-user-pins') || '[]');
+}
+
+function initialsFromName(name) {
+  return (name || 'PS').slice(0, 2).toUpperCase();
+}
+
+function normalizedUserPins() {
+  return getUserPins().map((pin) => ({
+    id: pin.id,
+    title: pin.title,
+    desc: pin.desc || '',
+    category: (pin.category || 'desain').toLowerCase(),
+    image: pin.image,
+    user: pin.ownerName || 'Pengguna',
+    initials: initialsFromName(pin.ownerName || 'PS'),
+    likes: 0
+  }));
+}
+
+function allPins() {
+  return [...normalizedUserPins(), ...samplePins];
+}
+
+function pinVisual(pin) {
+  if (pin.image) {
+    return `<img src="${pin.image}" alt="${escapeHtml(pin.title)}" loading="lazy">`;
+  }
+  return `
+    <div class="pin-placeholder" style="background:${pin.color};">
+      <span>${escapeHtml(pin.category)}</span>
+    </div>
+  `;
+}
+
 function filteredPins() {
-  return pins.filter((pin) => {
+  return allPins().filter((pin) => {
     const inCategory = activeCategory === 'semua' || pin.category === activeCategory;
     const haystack = `${pin.title} ${pin.desc} ${pin.category} ${pin.user}`.toLowerCase();
     return inCategory && haystack.includes(searchTerm.toLowerCase());
@@ -181,9 +217,7 @@ function renderPins() {
   pinGrid.innerHTML = visiblePins.map((pin) => `
     <article class="pin-card" data-pin-id="${pin.id}">
       <div class="pin-image-wrap">
-        <div class="pin-placeholder" style="background:${pin.color};">
-          <span>${escapeHtml(pin.category)}</span>
-        </div>
+        ${pinVisual(pin)}
         <div class="pin-overlay">
           <button class="btn-save ${isSaved(pin.id) ? 'active' : ''}" type="button" data-action="save" data-pin-id="${pin.id}">
             ${isSaved(pin.id) ? 'Tersimpan' : 'Simpan'}
@@ -219,14 +253,16 @@ function renderPins() {
 }
 
 function openPin(pinId) {
-  activePin = pins.find((pin) => pin.id === Number(pinId));
+  activePin = allPins().find((pin) => String(pin.id) === String(pinId));
   if (!activePin) return;
 
   document.getElementById('modalTitle').textContent = activePin.title;
   document.getElementById('modalDesc').textContent = activePin.desc;
   const modalVisual = document.getElementById('modalVisual');
-  modalVisual.style.background = activePin.color;
-  modalVisual.textContent = activePin.category;
+  modalVisual.style.background = activePin.image ? 'transparent' : activePin.color;
+  modalVisual.innerHTML = activePin.image
+    ? `<img src="${activePin.image}" alt="${escapeHtml(activePin.title)}">`
+    : escapeHtml(activePin.category);
   document.getElementById('modalAvatar').textContent = activePin.initials;
   document.getElementById('modalUser').textContent = activePin.user;
   syncModalActions();
@@ -291,7 +327,7 @@ pinGrid.addEventListener('click', (event) => {
   const actionButton = event.target.closest('[data-action]');
   if (actionButton) {
     event.stopPropagation();
-    const pin = pins.find((item) => item.id === Number(actionButton.dataset.pinId));
+    const pin = allPins().find((item) => String(item.id) === String(actionButton.dataset.pinId));
     const label = actionButton.dataset.action;
     if (label === 'like') {
       toggleLike(pin.id);
