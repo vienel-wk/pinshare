@@ -1,28 +1,10 @@
 const PROFILE_PINS_KEY = 'pinshare-user-pins';
 const PROFILE_SAVED_KEY = 'pinshare-saved';
 
-const samplePins = [
-  {
-    id: 1,
-    title: 'Inspirasi ruang kerja minimalis',
-    category: 'Desain',
-    color: '#f6d7df'
-  },
-  {
-    id: 2,
-    title: 'Referensi foto produk kreatif',
-    category: 'Fotografi',
-    color: '#d7e7f6'
-  },
-  {
-    id: 3,
-    title: 'Layout aplikasi sederhana',
-    category: 'Teknologi',
-    color: '#dff0df'
-  }
-];
+const samplePins = [];
 
 let activeProfileTab = 'mine';
+let onlinePins = [];
 
 const profileGrid = document.getElementById('profilePinGrid');
 const profileEmptyState = document.getElementById('profileEmptyState');
@@ -33,6 +15,29 @@ const profilePinCount = document.getElementById('profilePinCount');
 
 function getUserPins() {
   return JSON.parse(localStorage.getItem(PROFILE_PINS_KEY) || '[]');
+}
+
+async function loadOnlinePins() {
+  if (!window.pinshareFirebase) return;
+
+  const snapshot = await window.pinshareFirebase.db
+    .collection('pins')
+    .orderBy('createdAt', 'desc')
+    .get();
+
+  onlinePins = snapshot.docs.map((doc) => {
+    const pin = doc.data();
+    return {
+      id: doc.id,
+      title: pin.title || 'Tanpa judul',
+      desc: pin.desc || '',
+      category: pin.category || 'desain',
+      image: pin.image,
+      ownerEmail: pin.ownerEmail || '',
+      ownerName: pin.ownerName || 'Pengguna',
+      createdAt: pin.createdAt
+    };
+  });
 }
 
 function getSavedPins() {
@@ -46,10 +51,14 @@ function setSavedPins(savedPins) {
 function currentUserPins() {
   const session = typeof getSession === 'function' ? getSession() : null;
   if (!session) return [];
+  if (onlinePins.length > 0) {
+    return onlinePins.filter((pin) => pin.ownerEmail === session.email);
+  }
   return getUserPins().filter((pin) => pin.ownerEmail === session.email);
 }
 
 function allProfilePins() {
+  if (onlinePins.length > 0) return [...onlinePins, ...samplePins];
   return [...currentUserPins(), ...samplePins];
 }
 
@@ -152,4 +161,14 @@ profileGrid.addEventListener('click', (event) => {
   toggleProfileSave(saveButton.dataset.profileSave);
 });
 
-renderProfile();
+async function initProfile() {
+  try {
+    await loadOnlinePins();
+  } catch (error) {
+    console.error(error);
+    authToast('Gagal memuat pin online. Menampilkan data browser ini saja.', 'error');
+  }
+  renderProfile();
+}
+
+initProfile();

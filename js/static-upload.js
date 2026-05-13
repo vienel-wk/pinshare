@@ -13,6 +13,7 @@ const fileInput = document.getElementById('fileInput');
 const previewImg = document.getElementById('previewImg');
 const uploadPlaceholder = document.getElementById('uploadPlaceholder');
 let selectedImage = '';
+let selectedFile = null;
 
 if (fileInput) {
   fileInput.addEventListener('change', () => {
@@ -22,6 +23,7 @@ if (fileInput) {
       showToast('File harus berupa gambar.', 'error');
       return;
     }
+    selectedFile = file;
     const reader = new FileReader();
     reader.onload = (event) => {
       selectedImage = event.target.result;
@@ -35,18 +37,18 @@ if (fileInput) {
 
 const publishDemo = document.getElementById('publishDemo');
 if (publishDemo) {
-  publishDemo.addEventListener('click', () => {
+  publishDemo.addEventListener('click', async () => {
     const session = typeof getSession === 'function' ? getSession() : null;
     const title = document.getElementById('pinTitle').value.trim();
     const desc = document.getElementById('pinDesc').value.trim();
-    const category = document.getElementById('pinCategory').value;
+    const category = document.getElementById('pinCategory').value.toLowerCase();
 
     if (!session) {
       window.location.href = 'login.html';
       return;
     }
 
-    if (!selectedImage) {
+    if (!selectedFile || !selectedImage) {
       showToast('Pilih foto terlebih dahulu.', 'error');
       return;
     }
@@ -56,22 +58,40 @@ if (publishDemo) {
       return;
     }
 
-    const userPins = JSON.parse(localStorage.getItem('pinshare-user-pins') || '[]');
-    userPins.unshift({
-      id: `user-${Date.now()}`,
-      title,
-      desc,
-      category,
-      image: selectedImage,
-      ownerEmail: session.email,
-      ownerName: session.name,
-      createdAt: new Date().toISOString()
-    });
-    localStorage.setItem('pinshare-user-pins', JSON.stringify(userPins));
+    publishDemo.disabled = true;
+    publishDemo.textContent = 'Mengunggah...';
 
-    showToast('Pin berhasil diterbitkan.');
-    window.setTimeout(() => {
-      window.location.href = 'profile.html';
-    }, 800);
+    try {
+      if (!window.pinshareFirebase) {
+        throw new Error('Firebase belum siap.');
+      }
+
+      const safeName = selectedFile.name.replace(/[^a-z0-9._-]/gi, '-');
+      const filePath = `pins/${session.email}/${Date.now()}-${safeName}`;
+      const fileRef = window.pinshareFirebase.storage.ref().child(filePath);
+      await fileRef.put(selectedFile, { contentType: selectedFile.type });
+      const imageUrl = await fileRef.getDownloadURL();
+
+      await window.pinshareFirebase.db.collection('pins').add({
+        title,
+        desc,
+        category,
+        image: imageUrl,
+        storagePath: filePath,
+        ownerEmail: session.email,
+        ownerName: session.name,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      showToast('Pin berhasil diterbitkan online.');
+      window.setTimeout(() => {
+        window.location.href = 'profile.html';
+      }, 900);
+    } catch (error) {
+      console.error(error);
+      showToast('Gagal upload ke Firebase. Cek rules Storage/Firestore.', 'error');
+      publishDemo.disabled = false;
+      publishDemo.textContent = 'Terbitkan Pin';
+    }
   });
 }

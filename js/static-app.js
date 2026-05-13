@@ -10,6 +10,7 @@ let activeCategory = 'semua';
 let searchTerm = '';
 let visibleCount = 6;
 let activePin = null;
+let onlinePins = [];
 let comments = JSON.parse(localStorage.getItem('pinshare-comments') || '{}');
 let likedPins = JSON.parse(localStorage.getItem('pinshare-liked') || '[]');
 let savedPins = JSON.parse(localStorage.getItem('pinshare-saved') || '[]');
@@ -89,6 +90,29 @@ function getUserPins() {
   return JSON.parse(localStorage.getItem('pinshare-user-pins') || '[]');
 }
 
+async function loadOnlinePins() {
+  if (!window.pinshareFirebase) return;
+
+  const snapshot = await window.pinshareFirebase.db
+    .collection('pins')
+    .orderBy('createdAt', 'desc')
+    .get();
+
+  onlinePins = snapshot.docs.map((doc) => {
+    const pin = doc.data();
+    return {
+      id: doc.id,
+      title: pin.title || 'Tanpa judul',
+      desc: pin.desc || '',
+      category: (pin.category || 'desain').toLowerCase(),
+      image: pin.image,
+      user: pin.ownerName || 'Pengguna',
+      initials: initialsFromName(pin.ownerName || 'PS'),
+      likes: 0
+    };
+  });
+}
+
 function initialsFromName(name) {
   return (name || 'PS').slice(0, 2).toUpperCase();
 }
@@ -121,6 +145,7 @@ function normalizedUserPins() {
 }
 
 function allPins() {
+  if (onlinePins.length > 0) return [...onlinePins, ...samplePins];
   return [...normalizedUserPins(), ...samplePins];
 }
 
@@ -388,4 +413,14 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-renderPins();
+async function initPins() {
+  try {
+    await loadOnlinePins();
+  } catch (error) {
+    console.error(error);
+    showToast('Gagal memuat pin online. Menampilkan data browser ini saja.', 'error');
+  }
+  renderPins();
+}
+
+initPins();
